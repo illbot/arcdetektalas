@@ -10,9 +10,9 @@ class MainContent(QtWidgets.QWidget):
         self.src_image = QtWidgets.QLabel()
         self.result_image = QtWidgets.QLabel()
 
-        self.btn_MTCNN = QtWidgets.QPushButton("MTCNN")
-        self.btn_HaarCascade = QtWidgets.QPushButton("HaarCascade")
-        self.btn_RGB = QtWidgets.QPushButton("RGB")
+        self.btn_MTCNN = QtWidgets.QPushButton("MTCNN", self)
+        self.btn_HaarCascade = QtWidgets.QPushButton("HaarCascade", self)
+        self.btn_RGB = QtWidgets.QPushButton("RGB", self)
 
 
         hbox = QtWidgets.QHBoxLayout()
@@ -43,20 +43,22 @@ class MainContent(QtWidgets.QWidget):
     def setResultImg(self, img):
         self.result_image = img
 
+    @pyqtSlot()
     def MTCNN(self):
         print("MTCNN")
 
+    @pyqtSlot()
     def HaarCascade(self):
         print("Haar")
 
+    @pyqtSlot()
     def RGB(self):
         print("RGB")
 
     def initButtons(self):
-        pass
-        #self.btn_MTCNN.clicked.connect(self.MTCNN())
-        #self.btn_HaarCascade.clicked.connect(self.HaarCascade())
-        #self.btn_RGB.clicked.connect(self.RGB())
+        self.btn_MTCNN.clicked.connect(self.MTCNN)
+        self.btn_HaarCascade.clicked.connect(self.HaarCascade)
+        self.btn_RGB.clicked.connect(self.RGB)
 
 
 class App(QtWidgets.QMainWindow):
