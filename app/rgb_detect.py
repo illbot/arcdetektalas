@@ -23,18 +23,18 @@ def rgb_detect(img):
     # skin4 (161,102,94)
     # skin5 (80,51,53)
     # skin6 (89,47,42)
-    skin1_low = np.array(195, 137, 130)
-    skin1_high = np.array[200, 143, 135]
-    skin2_low = np.array[233, 185, 177]
-    skin2_high = np.array[238, 190, 167]
-    skin3_low = np.array[205, 185, 160]
-    skin3_high = np.array[213, 190, 167]
-    skin4_low = np.array[158, 98, 90]
-    skin4_high = np.array[165, 105, 100]
-    skin5_low = np.array[75, 46, 50]
-    skin5_high = np.array[85, 55, 57]
-    skin6_low = np.array[85, 34, 37]
-    skin6_high = np.array[93, 52, 47]
+    skin1_low = np.array([195, 137, 130])
+    skin1_high = np.array([200, 143, 135])
+    skin2_low = np.array([233, 185, 177])
+    skin2_high = np.array([238, 190, 167])
+    skin3_low = np.array([205, 185, 160])
+    skin3_high = np.array([213, 190, 167])
+    skin4_low = np.array([158, 98, 90])
+    skin4_high = np.array([165, 105, 100])
+    skin5_low = np.array([75, 46, 50])
+    skin5_high = np.array([85, 55, 57])
+    skin6_low = np.array([85, 34, 37])
+    skin6_high = np.array([93, 52, 47])
 
     # Creating masks
     mask_skin1 = cv2.inRange(image_hsv, skin1_low, skin1_high)
@@ -54,12 +54,12 @@ def rgb_detect(img):
     img_skin6 = cv2.bitwise_and(image_hsv, image_hsv, mask=mask_skin6)
 
     # Creating grey images for contours
-    gray_skin1 = cv2.cvtColor(img_skin1, cv2.COLOR_HSV2GRAY)
-    gray_skin2 = cv2.cvtColor(img_skin2, cv2.COLOR_HSV2GRAY)
-    gray_skin3 = cv2.cvtColor(img_skin3, cv2.COLOR_HSV2GRAY)
-    gray_skin4 = cv2.cvtColor(img_skin4, cv2.COLOR_HSV2GRAY)
-    gray_skin5 = cv2.cvtColor(img_skin5, cv2.COLOR_HSV2GRAY)
-    gray_skin6 = cv2.cvtColor(img_skin6, cv2.COLOR_HSV2GRAY)
+    gray_skin1 = cv2.cvtColor(cv2.cvtColor(img_skin1, cv2.COLOR_HSV2BGR), cv2.COLOR_BGR2GRAY)
+    gray_skin2 = cv2.cvtColor(cv2.cvtColor(img_skin2, cv2.COLOR_HSV2BGR), cv2.COLOR_BGR2GRAY)
+    gray_skin3 = cv2.cvtColor(cv2.cvtColor(img_skin3, cv2.COLOR_HSV2BGR), cv2.COLOR_BGR2GRAY)
+    gray_skin4 = cv2.cvtColor(cv2.cvtColor(img_skin4, cv2.COLOR_HSV2BGR), cv2.COLOR_BGR2GRAY)
+    gray_skin5 = cv2.cvtColor(cv2.cvtColor(img_skin5, cv2.COLOR_HSV2BGR), cv2.COLOR_BGR2GRAY)
+    gray_skin6 = cv2.cvtColor(cv2.cvtColor(img_skin6, cv2.COLOR_HSV2BGR), cv2.COLOR_BGR2GRAY)
 
     # Searching for contours
     contours_skin1, hierarchy = cv2.findContours(gray_skin1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -95,8 +95,11 @@ def rgb_detect(img):
         cv2.rectangle(img_result, (x, y), (x + w, y + h), (0, 0, 255), 2)
         faces = faces + 1
 
-    return img_result, len(faces)
+    return img_result, faces
 
+'''
 img = cv2.imread('teszt_kepek/picture_02.jpg')
 res, count = rgb_detect(img)
-cv2.imshow(res)
+cv2.imshow('res',res)
+cv2.waitKey()
+'''

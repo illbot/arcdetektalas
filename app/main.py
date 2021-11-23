@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from haarCascade import haarCascade
-from mtcnn_detect import draw_image_with_boxes
+from mtcnn_detect import mtcnn_detect
 from rgb_detect import rgb_detect
 
 import sys
@@ -16,6 +16,8 @@ class MainContent(QtWidgets.QWidget):
         self.src_image = QtWidgets.QLabel()
         self.result_image = QtWidgets.QLabel()
         self.face_count = QtWidgets.QLabel()
+        self.error = QtWidgets.QLabel()
+        self.error.setText("")
 
         self.img_url = None
 
@@ -33,6 +35,7 @@ class MainContent(QtWidgets.QWidget):
         vbox = QtWidgets.QVBoxLayout()
         vbox.addLayout(hbox)
 
+        vbox.addWidget(self.error)
         lb1 = QtWidgets.QLabel("source: ")
         vbox.addWidget(lb1)
 
@@ -59,46 +62,46 @@ class MainContent(QtWidgets.QWidget):
     @pyqtSlot()
     def MTCNN(self):
         if self.img_url is not None:
+            self.error.setText("")
             img = cv2.imread(self.img_url)
-            [result_pic, faces_count] = draw_image_with_boxes(img)
+            [result_pic, faces_count] = mtcnn_detect(img)
+            self.setResultPic(result_pic, faces_count)
         else:
-            print("nincs betöltve kép")
+            self.error.setText("Nincs betöltve kép")
 
     @pyqtSlot()
     def HaarCascade(self):
         if self.img_url is not None:
+            self.error.setText("")
             img = cv2.imread(self.img_url)
             [result_pic, faces_count] = haarCascade(img)
-            self.haar_setResultPic(result_pic, faces_count)
+            self.setResultPic(result_pic, faces_count)
         else:
-            print("nincs betöltve kép")
-
-    def haar_setResultPic(self, result_pic, faces_count):
-        result_rgb = cv2.cvtColor(result_pic, cv2.COLOR_BGR2RGB)
-        result_pixmap = self.convert_nparray_to_QPixmap(result_rgb)
-        pm1 = result_pixmap.scaled(800, 450, Qt.KeepAspectRatio)
-        self.result_image.setPixmap(pm1)
-        self.face_count.setText("Detektált arcok száma: " + str(faces_count))
+            self.error.setText("Nincs betöltve kép")
 
     @pyqtSlot()
     def RGB(self):
-        ##KELL!!!!!!!!!!!!!!!
         if self.img_url is not None:
+            self.error.setText("")
             img = cv2.imread(self.img_url)
             [result_pic, faces_count] = rgb_detect(img)
-            result_pixmap = self.convert_nparray_to_QPixmap(result_pic)
-            pm1 = result_pixmap.scaled(800, 450, Qt.KeepAspectRatio)
-            self.result_image.setPixmap(pm1)
-            #self.face_count.setText("Detektált arcok száma: " + str(faces_count))
+            self.setResultPic(result_pic, faces_count)
         else:
-            print("nincs betöltve kép")
+            self.error.setText("Nincs betöltve kép")
 
     def initButtons(self):
         self.btn_MTCNN.clicked.connect(self.MTCNN)
         self.btn_HaarCascade.clicked.connect(self.HaarCascade)
         self.btn_RGB.clicked.connect(self.RGB)
 
-    def convert_nparray_to_QPixmap(self,img):
+    def setResultPic(self, result_pic, faces_count):
+        result_rgb = cv2.cvtColor(result_pic, cv2.COLOR_BGR2RGB)
+        result_pixmap = self.convert_nparray_to_QPixmap(result_rgb)
+        pm1 = result_pixmap.scaled(800, 450, Qt.KeepAspectRatio)
+        self.result_image.setPixmap(pm1)
+        self.face_count.setText("Detektált arcok száma: " + str(faces_count))
+
+    def convert_nparray_to_QPixmap(self, img):
         w, h, ch = img.shape
         # Convert resulting image to pixmap
         if img.ndim == 1:
@@ -134,6 +137,7 @@ class App(QtWidgets.QMainWindow):
     def import_pic(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', '.\\teszt_kepek', "Image files (*.jpg *.gif)")
         self.image_url = fname[0]
+        print(self.image_url)
         pixmap = QPixmap(self.image_url)
         pm1 = pixmap.scaled(800, 450, Qt.KeepAspectRatio)
         self.main_widget.src_image.setPixmap(pm1)
