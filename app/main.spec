@@ -3,11 +3,19 @@
 
 block_cipher = None
 
+import os
+import mtcnn
+import cv2
+
+datas = [
+  (os.path.join(os.path.dirname(mtcnn.__file__), 'data/mtcnn_weights.npy'), 'mtcnn/data/'),
+  (os.path.join(os.path.dirname(cv2.__file__), 'data/*'), 'cv2/data/')
+]
 
 a = Analysis(['main.py'],
              pathex=[],
              binaries=[],
-             datas=[],
+             datas=datas,
              hiddenimports=[],
              hookspath=[],
              hooksconfig={},

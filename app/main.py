@@ -2,13 +2,23 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from mtcnn.mtcnn import MTCNN
 
 from haarCascade import haarCascade
 from mtcnn_detect import mtcnn_detect
 from rgb_detect import rgb_detect
 
+#import mtcnn
 import sys
 import cv2
+import os
+
+'''
+datas = [
+    (os.path.join(os.path.dirname(mtcnn.__file__),'data\*'), )
+]
+'''
+
 
 class MainContent(QtWidgets.QWidget):
     def __init__(self):
@@ -18,6 +28,8 @@ class MainContent(QtWidgets.QWidget):
         self.face_count = QtWidgets.QLabel()
         self.error = QtWidgets.QLabel()
         self.error.setText("")
+
+        #self.detector = MTCNN()
 
         self.img_url = None
 
@@ -62,7 +74,7 @@ class MainContent(QtWidgets.QWidget):
     @pyqtSlot()
     def MTCNN(self):
         if self.img_url is not None:
-            self.error.setText("")
+            self.error.setText("MTCNN")
             img = cv2.imread(self.img_url)
             [result_pic, faces_count] = mtcnn_detect(img)
             self.setResultPic(result_pic, faces_count)
@@ -72,7 +84,7 @@ class MainContent(QtWidgets.QWidget):
     @pyqtSlot()
     def HaarCascade(self):
         if self.img_url is not None:
-            self.error.setText("")
+            self.error.setText("HaarCascade")
             img = cv2.imread(self.img_url)
             [result_pic, faces_count] = haarCascade(img)
             self.setResultPic(result_pic, faces_count)
@@ -82,7 +94,7 @@ class MainContent(QtWidgets.QWidget):
     @pyqtSlot()
     def RGB(self):
         if self.img_url is not None:
-            self.error.setText("")
+            self.error.setText("RGB")
             img = cv2.imread(self.img_url)
             [result_pic, faces_count] = rgb_detect(img)
             self.setResultPic(result_pic, faces_count)

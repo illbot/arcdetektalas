@@ -3,7 +3,8 @@ from matplotlib.patches import Rectangle
 from matplotlib.patches import Circle
 from mtcnn.mtcnn import MTCNN
 import cv2
- 
+
+'''
 def draw_image_with_boxes(filename, result_list):
 	data = pyplot.imread(filename)
 	pyplot.imshow(data)
@@ -23,8 +24,7 @@ def draw_image_with_boxes(filename, result_list):
 			ax.add_patch(dot)
     #kirajzolas
 	pyplot.show()
-
-
+'''
 
 def mtcnn_detect(image):
 	image_local = image.copy()
