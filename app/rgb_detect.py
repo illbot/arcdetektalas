@@ -23,7 +23,7 @@ def rgb_detect(img):
     # skin4 (161,102,94)
     # skin5 (80,51,53)
     # skin6 (89,47,42)
-    skin1_low = np.array[195, 137, 130]
+    skin1_low = np.array(195, 137, 130)
     skin1_high = np.array[200, 143, 135]
     skin2_low = np.array[233, 185, 177]
     skin2_high = np.array[238, 190, 167]
@@ -95,4 +95,8 @@ def rgb_detect(img):
         cv2.rectangle(img_result, (x, y), (x + w, y + h), (0, 0, 255), 2)
         faces = faces + 1
 
-    return img_result, faces
+    return img_result, len(faces)
+
+img = cv2.imread('teszt_kepek/picture_02.jpg')
+res, count = rgb_detect(img)
+cv2.imshow(res)

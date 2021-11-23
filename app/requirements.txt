@@ -1,2 +1,6 @@
 pyqt5
 pyqt5-tools
+opencv-python
+mtcnn
+tensorflow
+numpy

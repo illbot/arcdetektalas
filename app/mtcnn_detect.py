@@ -22,7 +22,7 @@ def draw_image_with_boxes(filename, result_list):
 			ax.add_patch(dot)
     #kirajzolas
 	pyplot.show()
- 
+'''
 filename = 'picture_02.jpg'
 
 pixels = pyplot.imread(filename)
@@ -32,3 +32,4 @@ detector = MTCNN()
 faces = detector.detect_faces(pixels)
 # arcok bejelolese
 draw_image_with_boxes(filename, faces)
+'''
