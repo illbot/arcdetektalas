@@ -4,3 +4,4 @@ opencv-python
 mtcnn
 tensorflow
 numpy
+pyinstaller
